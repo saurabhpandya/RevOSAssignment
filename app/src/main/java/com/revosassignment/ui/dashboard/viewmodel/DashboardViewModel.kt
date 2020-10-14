@@ -8,6 +8,7 @@ import com.mobiquityassignment.base.BaseViewModel
 import com.ravos.RevOS
 import com.ravos.data.booking.BOOKING_STATUS
 import com.ravos.data.model.BookingInfoModel
+import com.ravos.data.model.TariffModel
 import com.ravos.data.model.VehicleModel
 import com.ravos.data.model.ZoneModel
 import com.revosassignment.data.dashboard.DashboardRepository
@@ -42,6 +43,10 @@ class DashboardViewModel(
     var zoneLiveData = MutableLiveData<Resource<Boolean>>()
 
     var moveCamera = false
+
+    var tariffLiveData = MutableLiveData<Resource<Boolean>>()
+
+    var tariffModel = TariffModel(id = "")
 
     fun getZones() = viewModelScope.launch(Dispatchers.IO) {
         withContext(Dispatchers.Main) {
@@ -122,5 +127,46 @@ class DashboardViewModel(
                 }
             }
         }
+
+    fun getTariff(tariffId: String) = viewModelScope.launch(Dispatchers.IO) {
+        withContext(Dispatchers.Main) {
+            tariffLiveData.value = Resource.loading(null)
+        }
+        try {
+            val arylstTariffs = RevOS.getTariff(tariffId)
+            if (!arylstTariffs.isNullOrEmpty()) {
+                tariffModel = arylstTariffs[0]
+            }
+
+            withContext(Dispatchers.Main) {
+                tariffLiveData.value = Resource.success(true)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            withContext(Dispatchers.Main) {
+                tariffLiveData.value = Resource.error(null, e.localizedMessage)
+            }
+        }
+    }
+
+    fun calculateRideFare(): Pair<Int, Double> {
+        val strStartDate = activeBookingInfoModel?.ride_start_time
+        val strEndDate = Utility.getCurrentDate()
+        val dateStart = Utility.convertStringToDate(strStartDate!!)
+        val dateEnd = Utility.convertStringToDate(strEndDate)
+        val diffTime = dateEnd.time - dateStart.time
+        val minutes = Utility.getMinutesFromMills(diffTime)
+        Log.d(TAG, "showPaymentInfo:Duration in Minutes: $minutes")
+
+        var totalFare = 0.0
+        if (tariffModel.base_fare != null) {
+            if (tariffModel.per_minute != null) {
+                val rideFare = minutes * tariffModel.per_minute!!
+                totalFare = tariffModel.base_fare!! + rideFare
+            }
+        }
+        return Pair(minutes, totalFare)
+    }
 
 }

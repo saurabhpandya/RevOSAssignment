@@ -175,7 +175,6 @@ class BookingFragment : BaseFragment(), View.OnClickListener {
                 view?.findNavController()
                     ?.navigate(R.id.action_bookingFragment_to_bookingHistoryFragment, bundle)
             }
-
         }
     }
 

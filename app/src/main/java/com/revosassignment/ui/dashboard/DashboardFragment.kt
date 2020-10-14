@@ -1,12 +1,15 @@
 package com.revosassignment.ui.dashboard
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -44,6 +47,8 @@ import com.revosassignment.databinding.FragmentDashboardBinding
 import com.revosassignment.ui.dashboard.viewmodel.DashboardViewModel
 import com.revosassignment.utility.OnItemClickListener
 import com.revosassignment.utility.Status
+import com.revosassignment.utility.Utility
+import com.revosassignment.utility.Utility.Companion.getMinutesFromMills
 import com.revosassignment.utility.showToast
 
 class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
@@ -60,6 +65,8 @@ class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
     private var locationManager: LocationManager? = null
 
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    internal val UPI_PAYMENT = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -355,6 +362,7 @@ class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
                             binding.imgvwExpandCollapse.visibility = View.GONE
                             binding.cnstrntlytActiveBooking.visibility = View.VISIBLE
                             setActiveBookingData()
+                            viewModel.getTariff(viewModel.activeBookingInfoModel?.tariffId!!)
                         }
                     }
                 }
@@ -375,6 +383,21 @@ class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
                     if (it.data!!) {
                         viewModel.getActiveBooking()
                     }
+                }
+            }
+        })
+
+        viewModel.tariffLiveData.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.LOADING -> {
+                    showProgress(true)
+                }
+                Status.ERROR -> {
+                    showProgress(false)
+                    requireActivity().showToast(it.message!!)
+                }
+                Status.SUCCESS -> {
+                    showProgress(false)
                 }
             }
         })
@@ -412,8 +435,29 @@ class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
         when (v?.id) {
             R.id.btn_complete_ride -> {
                 showCompleteDialog()
+
             }
         }
+    }
+
+    private fun showPaymentInfo() {
+        val calculation = viewModel.calculateRideFare()
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Payment Summary")
+        val message =
+            "Total Ride minutes : ${calculation.first}\nTotal Payment for Ride: ${calculation.second}"
+        builder.setMessage(message)
+            .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                val note =
+                    "Ride Charge for ${viewModel.activeBookingInfoModel?.bookingId} from ${viewModel.activeBookingInfoModel?.userName}"
+                val amount = "${calculation.second}"
+                payUsingUpi("1", "saurabhpandya7@okaxis", "Saurabh", note)
+            })
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, id ->
+
+            })
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 
     private fun showCompleteDialog() {
@@ -421,13 +465,103 @@ class DashboardFragment : BaseFragment(), OnMapReadyCallback, LocationListener,
         builder.setTitle("Complete Ride")
         builder.setMessage("Are you sure you want to complete ride?")
             .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                viewModel.completeBooking()
+                showPaymentInfo()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, id ->
 
             })
         val alert: AlertDialog = builder.create()
         alert.show()
+    }
+
+    fun payUsingUpi(amount: String, upiId: String, name: String, note: String) {
+
+        val uri = Uri.parse("upi://pay").buildUpon()
+            .appendQueryParameter("pa", upiId)
+            .appendQueryParameter("pn", name)
+            .appendQueryParameter("tn", note)
+            .appendQueryParameter("am", amount)
+            .appendQueryParameter("cu", "INR")
+            .build()
+
+
+        val upiPayIntent = Intent(Intent.ACTION_VIEW)
+        upiPayIntent.data = uri
+
+        // will always show a dialog to user to choose an app
+        val chooser = Intent.createChooser(upiPayIntent, "Pay with")
+
+        // check if intent resolves
+        if (null != chooser.resolveActivity(requireActivity().packageManager)) {
+            startActivityForResult(chooser, UPI_PAYMENT)
+        } else {
+            requireActivity().showToast("No UPI app found, please install one to continue")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            UPI_PAYMENT -> {
+                if (Activity.RESULT_OK == resultCode || resultCode == 11) {
+                    if (data != null) {
+                        val trxt = data.getStringExtra("response")
+                        Log.d("UPI", "onActivityResult: $trxt")
+                        val dataList = ArrayList<String>()
+                        dataList.add(trxt)
+                        upiPaymentDataOperation(dataList)
+                    } else {
+                        Log.d("UPI", "onActivityResult: " + "Return data is null")
+                        val dataList = ArrayList<String>()
+                        dataList.add("nothing")
+                        upiPaymentDataOperation(dataList)
+                    }
+                } else {
+                    Log.d(
+                        "UPI",
+                        "onActivityResult: " + "Return data is null"
+                    )
+                    //when user simply back without payment
+                    val dataList = ArrayList<String>()
+                    dataList.add("nothing")
+//                    upiPaymentDataOperation(dataList)
+                }
+            }
+        }
+    }
+
+    private fun upiPaymentDataOperation(data: ArrayList<String>) {
+        var str: String? = data[0]
+        Log.d("UPIPAY", "upiPaymentDataOperation: " + str!!)
+        var paymentCancel = ""
+        if (str == null) str = "discard"
+        var status = ""
+        var approvalRefNo = ""
+        val response = str.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        for (i in response.indices) {
+            val equalStr =
+                response[i].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            if (equalStr.size >= 2) {
+                if (equalStr[0].toLowerCase() == "Status".toLowerCase()) {
+                    status = equalStr[1].toLowerCase()
+                } else if (equalStr[0].toLowerCase() == "ApprovalRefNo".toLowerCase() || equalStr[0].toLowerCase() == "txnRef".toLowerCase()) {
+                    approvalRefNo = equalStr[1]
+                }
+            } else {
+                paymentCancel = "Payment cancelled by user."
+            }
+        }
+
+        if (status == "success") {
+            //Code to handle successful transaction here.
+            requireActivity().showToast("Transaction successful.")
+            Log.d("UPI", "responseStr: $approvalRefNo")
+            viewModel.completeBooking()
+        } else if ("Payment cancelled by user." == paymentCancel) {
+            requireActivity().showToast("Payment cancelled by user.")
+        } else {
+            requireActivity().showToast("Transaction failed.Please try again")
+        }
+
     }
 
 }

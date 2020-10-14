@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/txtvw_booking_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Booking Id"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/txtvw_booking_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtvw_zone_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zone Id"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_booking_id" />
+
+            <TextView
+                android:id="@+id/txtvw_vehicle_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vehicle Id"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_zone_id" />
+
+            <TextView
+                android:id="@+id/txtvw_booking_status"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="right|center"
+                android:text="Booking Status"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toTopOf="@+id/txtvw_booking_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtvw_booking_id"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtvw_booking_time"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="right"
+                android:text="Booking Status"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtvw_booking_id"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_booking_status" />
+
+            <TextView
+                android:id="@+id/txtvw_booking_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="User Name"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_booking_id"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_vehicle_id" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

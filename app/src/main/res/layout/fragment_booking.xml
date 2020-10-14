@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.revosassignment.ui.booking.viewmodel.BookingViewModel" />
+
+        <variable
+            name="bookingInfoModel"
+            type="com.ravos.data.model.BookingInfoModel" />
+
+        <import type="com.mobiquityassignment.base.TextChangeComponent" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_16sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtvw_zone_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zone"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtvw_zone_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Location"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_zone_detail_title" />
+
+            <TextView
+                android:id="@+id/txtvw_zone_vehicle_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Vehicle Details"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_zone_location" />
+
+            <TextView
+                android:id="@+id/txtvw_vehicle_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="V10001"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_vehicle_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_zone_vehicle_detail_title" />
+
+            <TextView
+                android:id="@+id/txtvw_vehicle_battery_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="40 % Battery"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_vehicle_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_vehicle_id" />
+
+            <TextView
+                android:id="@+id/txtvw_vehicle_running_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="14 km"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_vehicle_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_vehicle_battery_status" />
+
+            <TextView
+                android:id="@+id/txtvw_ride_charges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Ride Charges"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_zone_vehicle_detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_vehicle_running_range" />
+
+            <TextView
+                android:id="@+id/txtvw_ride_base_fare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Base Fare : 5"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_ride_charges"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_ride_charges" />
+
+            <TextView
+                android:id="@+id/txtvw_ride_charge_per_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Every minute : 1.15"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_ride_charges"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_ride_base_fare" />
+
+            <TextView
+                android:id="@+id/txtvw_ride_pause_charges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Pause Charge"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_ride_charges"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_ride_charge_per_min" />
+
+            <TextView
+                android:id="@+id/txtvw_ride_pause_charges_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Every minute : 0.50"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/txtvw_ride_pause_charges"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_ride_pause_charges" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/hint_name"
+                app:error="@{vm.errUserName}"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtvw_ride_pause_charges_val">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedttxt_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:text="@={bookingInfoModel.userName}"
+                    app:textAttrChanged="@{() -> vm.onTextChanged(TextChangeComponent.BOOK_RIDE_USER_NAME)}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_mobile"
+                app:error="@{vm.errMobile}"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="@+id/til_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/til_user_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedttxt_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:text="@={bookingInfoModel.mobileNumber}"
+                    app:textAttrChanged="@{() -> vm.onTextChanged(TextChangeComponent.BOOK_RIDE_MOBILE)}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_dob"
+                app:error="@{vm.errDob}"
+                app:errorEnabled="true"
+                app:layout_constraintStart_toStartOf="@+id/til_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/til_mobile">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedttxt_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none"
+                    android:singleLine="true"
+                    android:text="@={bookingInfoModel.dob}"
+                    app:textAttrChanged="@{() -> vm.onTextChanged(TextChangeComponent.BOOK_RIDE_DOB)}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_book"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/btn_bg"
+                android:onClick="@{() -> vm.validateUserData()}"
+                android:text="@string/lbl_book_ride"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_dob" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

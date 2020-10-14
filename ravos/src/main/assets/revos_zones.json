@@ -1,0 +1,31 @@
+{
+  "zones": [
+    {
+      "id": "Z10001",
+      "location": "Premchand nagar Amul Garden",
+      "distance": "",
+      "no_of_vehicles": "3",
+      "vehicle_type": "miracle",
+      "latitude": 23.03474794,
+      "longitude": 72.52153801
+    },
+    {
+      "id": "Z10002",
+      "location": "Ashwini Park",
+      "distance": "",
+      "no_of_vehicles": "2",
+      "vehicle_type": "miracle",
+      "latitude": 23.03631424,
+      "longitude": 72.51705486
+    },
+    {
+      "id": "Z10003",
+      "location": "Apna Adda Opp Rajpath Club",
+      "distance": "",
+      "no_of_vehicles": "3",
+      "vehicle_type": "miracle",
+      "latitude": 23.03777773,
+      "longitude": 72.51695782
+    }
+  ]
+}

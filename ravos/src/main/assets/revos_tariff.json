@@ -1,0 +1,13 @@
+{
+  "tariff": [
+    {
+      "id": "T10001",
+      "security_deposit": 199.0,
+      "currency": "INR",
+      "base_fare": 5.0,
+      "per_minute": 1.50,
+      "pause_charge": "0.50",
+      "pause_charge_per": "minute"
+    }
+  ]
+}

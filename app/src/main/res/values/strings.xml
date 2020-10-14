@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RevOSAssignment</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_vehicle_info">Vehicle Info</string>
+    <string name="nav_book_ride">Book Ride</string>
+    <string name="nav_book_history">Book History</string>
+
+    <string name="lbl_unlock">Unlock</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_mobile">Mobile</string>
+    <string name="hint_dob">Date of Birth</string>
+
+    <string name="lbl_book_ride">Book a Ride</string>
+
+    <string name="lbl_proceed">Proceed</string>
+
+</resources>

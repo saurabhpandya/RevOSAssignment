@@ -1,0 +1,25 @@
+{
+  "zone_vehicles": [
+    {
+      "id": "V10001",
+      "zone_id": "Z10001",
+      "battery_per": "65",
+      "km_range": "42000",
+      "vehicle_type": "miracle"
+    },
+    {
+      "id": "V10002",
+      "zone_id": "Z10001",
+      "battery_per": "55",
+      "km_range": "35000",
+      "vehicle_type": "miracle"
+    },
+    {
+      "id": "V10003",
+      "zone_id": "Z10001",
+      "battery_per": "20",
+      "km_range": "14000",
+      "vehicle_type": "miracle"
+    }
+  ]
+}
